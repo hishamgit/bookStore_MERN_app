@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
 import booksRouter from "./routes/booksRouter.js";
 import cors from "cors";
+import authRouter from "./routes/authRouter.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -18,15 +20,18 @@ app.use(cors());
 //     allowedHeaders:['Content-Type']
 // })
 // )
+
 //middleware for parsing request body
 app.use(express.json());
-//middleware for booksRouter
+//middleware for cookie
+app.use(cookieParser());
+//middlewares for Routers
 app.use('/book',booksRouter);
+app.use('/auth',authRouter)
 
 app.get("/", (req, res) => {
   res.status(234).send("Welcome buddy");
 });
-
 
 mongoose
   .connect(mongoDbURL)
@@ -39,3 +44,4 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
