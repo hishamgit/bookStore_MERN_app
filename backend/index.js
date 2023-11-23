@@ -6,6 +6,7 @@ import booksRouter from "./routes/booksRouter.js";
 import cors from "cors";
 import authRouter from "./routes/authRouter.js";
 import cookieParser from "cookie-parser";
+import { userAuthMiddleware } from "./middlewares/userAuth.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/auth',authRouter)
 app.get("/", (req, res) => {
   res.status(234).send("Welcome buddy");
 });
+app.post('/',userAuthMiddleware)
 
 mongoose
   .connect(mongoDbURL)
