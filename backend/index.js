@@ -27,13 +27,13 @@ app.use(express.json());
 //middleware for cookie
 app.use(cookieParser());
 //middlewares for Routers
-app.use('/book',booksRouter);
-app.use('/auth',authRouter)
+app.use("/book", booksRouter);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.status(234).send("Welcome buddy");
 });
-app.post('/',userAuthMiddleware)
+app.post("/", userAuthMiddleware);
 
 mongoose
   .connect(mongoDbURL)
@@ -46,4 +46,3 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
