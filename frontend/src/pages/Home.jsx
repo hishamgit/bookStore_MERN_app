@@ -23,7 +23,7 @@ function Home() {
   const Logout = () => {
     removeCookie("token",{path: "/", domain: "localhost"})
     setLoginStatus(false)
-    navigate("/auth/signup");
+    navigate("/auth/login");
     console.log('cookie removal')
   };
 

@@ -1,13 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState ,useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Zoom, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
+import { loginContext } from "../../appContext";
 
 function Signup() {
   const navigate = useNavigate();
+  const {loginStatus}=useContext(loginContext)
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -58,6 +60,12 @@ function Signup() {
       password: "",
     });
   };
+
+  useEffect(() => {
+    if (loginStatus) {
+      navigate("/");
+    }
+  }, [loginStatus]);
 
   return (
     <div className="p-4">
