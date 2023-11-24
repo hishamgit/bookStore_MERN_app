@@ -12,7 +12,10 @@ const app = express();
 
 //middleware for handling cors
 //option 1:allow all origins with default of cors();
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: true,
+}));
 //option 2:allow custom origins
 // app.use(
 //     cors({

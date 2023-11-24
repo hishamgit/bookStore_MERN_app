@@ -46,7 +46,7 @@ authRouter.post("/login", async (req, res) => {
     const token = createSecretToken(user._id, email, user.username);
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: true,
+    //   httpOnly: false, //false
     });
     res
       .status(201)

@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast,Zoom,Flip } from "react-toastify";
+import { ToastContainer, toast, Zoom, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 
 function Signup() {
   const navigate = useNavigate();
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: "",
     username: "",
@@ -19,19 +20,21 @@ function Signup() {
     setInputValue({ ...inputValue, [name]: value }); //[name]
   };
   const handleSuccess = (msg) => {
-    toast.success(msg, { position:'top-right',transition: Zoom,style : {width:'5%',height:'5%'}});
+    toast.success(msg,{transition: Zoom});
   };
   const handleError = (msg) => {
-    toast.error(msg, { position: "top-left" ,style : {width:'50px',height:'30px'},transition: Flip,});
+    toast.error(msg, {
+      transition: Flip
+    });
   };
   const handleSubmit = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     try {
       const { data } = await axios.post(
         "http://localhost:5555/auth/signup",
         { ...inputValue },
-        // { withCredentials: true }
+        { withCredentials: true }
       );
       const { success, message } = data;
       if (success) {
@@ -46,25 +49,38 @@ function Signup() {
       }
     } catch (error) {
       console.log(error);
-      setLoading(false)
+      setLoading(false);
     }
     setInputValue({
-        ...inputValue,
-        email: "",
-        username: "",
-        password: "",
-      });
+      ...inputValue,
+      email: "",
+      username: "",
+      password: "",
+    });
   };
- 
+
   return (
     <div className="p-4">
       <BackButton />
-      <ToastContainer />
-      {loading ? <Spinner/> :''}
+      <div>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </div>
+      {loading ? <Spinner /> : ""}
       <div className="flex justify-center">
         <h1 className="text-3xl my-4">Signup</h1>
       </div>
-      {loading ? <Spinner /> : ''}
+      {loading ? <Spinner /> : ""}
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col border-2 border-sky-800 rounded-xl p-4 mx-auto w-[600px]">
           <div className="my-4">
@@ -103,11 +119,13 @@ function Signup() {
             Sign up
           </button>
           <span className="flex justify-center">
-            Already have an account..?  <Link className="text-sky-600" to={"/auth/login"} > Login</Link>
+            Already have an account..?{" "}
+            <Link className="text-sky-600" to={"/auth/login"}>
+              Login
+            </Link>
           </span>
         </div>
       </form>
-      
     </div>
   );
 }

@@ -12,7 +12,7 @@ export const userAuthMiddleware = (req, res) => {
     if (err) {
       return res.json({ status: false, message: "token verification failed" });
     } else {
-      console.log(data);
+      //   console.log(data);
       const user = await User.findById(data.id);
       if (user) {
         res.json({ status: true, user: user.username });
