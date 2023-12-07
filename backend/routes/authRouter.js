@@ -7,7 +7,7 @@ const authRouter = express.Router();
 
 authRouter.post("/signup", async (req, res) => {
   try {
-    const { email, username, password, createdAt } = req.body;
+    const { email, username, password,remember } = req.body;
     if (!(email && password && username)) {
       return res.status(400).json({ message: "All input is required" });
     }
@@ -15,11 +15,12 @@ authRouter.post("/signup", async (req, res) => {
     if (existingUser) {
       return res.json({ message: "user already exists" });
     }
-    const user = await User.create({ email, password, username, createdAt });
+    const user = await User.create({ email, password, username });
     const token = createSecretToken(user._id, email, username);
     res.cookie("token", token, {
       withCredentials: true,
-    //   httpOnly: true,
+      expires: remember ? new Date(Date.now() + 24 * 60 * 60 * 1000) :  new Date(Date.now() + 300 * 1000),
+    //   httpOnly: true, // prevent editing of cookie from client side
     });
     res
       .status(201)
@@ -31,7 +32,7 @@ authRouter.post("/signup", async (req, res) => {
 
 authRouter.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password ,remember} = req.body;
     if (!(email && password)) {
       return res.status(400).json({ message: "enter each field " });
     }
@@ -46,6 +47,7 @@ authRouter.post("/login", async (req, res) => {
     const token = createSecretToken(user._id, email, user.username);
     res.cookie("token", token, {
       withCredentials: true,
+      expires: remember ? new Date(Date.now() + 24 * 60 * 60 * 1000) :  new Date(Date.now() + 300 * 1000),
     //   httpOnly: false, //false
     });
     res

@@ -11,6 +11,7 @@ function Signup() {
   const navigate = useNavigate();
   const {loginStatus}=useContext(loginContext)
   const [loading, setLoading] = useState(false);
+  const [remember,setRemember]=useState(false);
   const [inputValue, setInputValue] = useState({
     email: "",
     username: "",
@@ -35,7 +36,7 @@ function Signup() {
     try {
       const { data } = await axios.post(
         "http://localhost:5555/auth/signup",
-        { ...inputValue },
+        { ...inputValue,remember },
         { withCredentials: true }
       );
       const { success, message } = data;
@@ -44,7 +45,7 @@ function Signup() {
         setLoading(false);
         setTimeout(() => {
           navigate("/");
-        }, 9000);
+        }, 3000);
       } else {
         handleError(message);
         setLoading(false);
@@ -70,20 +71,6 @@ function Signup() {
   return (
     <div className="p-4">
       <BackButton />
-      <div>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </div>
       {loading ? <Spinner /> : ""}
       <div className="flex justify-center">
         <h1 className="text-3xl my-4">Signup</h1>
@@ -122,6 +109,24 @@ function Signup() {
               onChange={handleOnChange}
               className="border-2 border-gray-500 px-4 py-2 w-full"
             />
+          </div>
+          <div class="flex items-center mb-4">
+            <input
+              id="default-checkbox"
+              type="checkbox"
+              name="remember"
+              value={remember}
+              onChange={(e)=>{
+                  setRemember(e.target.checked)
+              }}
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label
+              for="default-checkbox"
+              class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Remember me..
+            </label>
           </div>
           <button className="p-2 bg-sky-300" type="submit">
             Sign up

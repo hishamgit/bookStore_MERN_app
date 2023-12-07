@@ -21,7 +21,7 @@ function Home() {
   const navigate = useNavigate();
 
   const Logout = () => {
-    removeCookie("token",{path: "/", domain: "localhost"})
+    removeCookie("token",{path: "/", domain: "localhost"})  //since httpOnly:false
     setLoginStatus(false)
     navigate("/auth/login");
     console.log('cookie removal')
@@ -45,7 +45,6 @@ function Home() {
         removeCookie("token",{ path: '/' });
         setLoginStatus(false)
         toast(user, { position: "top-left" });
-        navigate("/auth/login");
         console.log('cookie not ok')
       }
     };
@@ -89,18 +88,6 @@ function Home() {
             </button>
           </div>
         )}
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
 
         <div className="flex justify-center items-center gap-x-4">
           <button
