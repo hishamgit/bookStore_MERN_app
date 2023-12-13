@@ -30,13 +30,13 @@ app.use(express.json());
 //middleware for cookie
 app.use(cookieParser());
 //middlewares for Routers
-app.use("/book", booksRouter);
-app.use("/auth", authRouter);
+app.use("/api/book", booksRouter);
+app.use("/api/auth", authRouter);
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.status(234).send("Welcome buddy");
 });
-app.post("/", userAuthMiddleware);
+app.post("/api", userAuthMiddleware);
 
 mongoose
   .connect(mongoDbURL)

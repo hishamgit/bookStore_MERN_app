@@ -21,7 +21,7 @@ function CreateBook() {
       publishYear,
     };
     axios
-      .post("http://localhost:5555/book", data)
+      .post("http://localhost:5555/api/book", data)
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Book created successfully", { variant: "success" });

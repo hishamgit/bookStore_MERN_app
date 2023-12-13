@@ -13,7 +13,7 @@ const DeleteBook = () => {
 
   const handleDeleteBook=()=>{
     setLoading(true)
-    axios.delete(`http://localhost:5555/book/${id}`).then(()=>{
+    axios.delete(`http://localhost:5555/api/book/${id}`).then(()=>{
       setLoading(false)
       enqueueSnackbar('Book deleted successfully',{variant:'warning'})
       navigate('/')

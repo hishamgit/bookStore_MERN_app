@@ -31,7 +31,7 @@ function Home() {
     setLoading(true);
     const verifyCookie = async () => {
       const { data } = await axios.post(
-        "http://localhost:5555",
+        "http://localhost:5555/api",
         {},
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ function Home() {
     };
     verifyCookie();
     axios
-      .get("http://localhost:5555/book")
+      .get("http://localhost:5555/api/book")
       .then((response) => {
         setBooks(response.data.data);
         setLoading(false);

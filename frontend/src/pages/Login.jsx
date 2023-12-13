@@ -44,7 +44,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5555/auth/login",
+        "http://localhost:5555/api/auth/login",
         { ...inputValue,remember },
         { withCredentials: true }
       );

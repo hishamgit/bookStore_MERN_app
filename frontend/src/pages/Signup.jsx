@@ -35,7 +35,7 @@ function Signup() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5555/auth/signup",
+        "http://localhost:5555/api/auth/signup",
         { ...inputValue,remember },
         { withCredentials: true }
       );
