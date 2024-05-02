@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import axios from "axios";
+import { REACT_APP_API_URL } from "../../config"; 
 
 function CreateBook() {
   const [title, setTitle] = useState("");
@@ -12,6 +13,7 @@ function CreateBook() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const axiosInstance=axios.create({baseURL:REACT_APP_API_URL})
 
   const handleSaveBook = () => {
     setLoading(true);
@@ -20,8 +22,8 @@ function CreateBook() {
       author,
       publishYear,
     };
-    axios
-      .post("http://localhost:5555/api/book", data)
+    axiosInstance
+      .post("book", data)
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Book created successfully", { variant: "success" });

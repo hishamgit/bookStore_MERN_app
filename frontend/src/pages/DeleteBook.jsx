@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
-import axios from 'axios'
 import { useNavigate,useParams } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import axios from "axios";
+import { REACT_APP_API_URL } from '../../config'
 
 const DeleteBook = () => {
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const navigate=useNavigate();
   const {enqueueSnackbar}=useSnackbar()
+  const axiosInstance=axios.create({baseURL:REACT_APP_API_URL})
+
 
   const handleDeleteBook=()=>{
     setLoading(true)
-    axios.delete(`http://localhost:5555/api/book/${id}`).then(()=>{
+    axiosInstance.delete(`book/${id}`).then(()=>{
       setLoading(false)
       enqueueSnackbar('Book deleted successfully',{variant:'warning'})
       navigate('/')

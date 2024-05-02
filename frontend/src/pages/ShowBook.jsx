@@ -1,18 +1,46 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
+import { REACT_APP_API_URL } from '../../config'
+import axios from "axios";
+import { loginContext } from "../../appContext";
+import { useCookies } from "react-cookie";
 
 const ShowBook = () => {
   const [book, setBook] = useState({});
   const [loading, setLoading] = useState(false);
+  const {loginStatus,setLoginStatus}=useContext(loginContext);
+  const [cookies,setCookie, removeCookie] = useCookies([]);
+  const navigate = useNavigate();
+
   const { id } = useParams();
+  const axiosInstance=axios.create({baseURL:REACT_APP_API_URL})
+
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get(`http://localhost:5555/api/book/${id}`)
+    const verifyCookie = async () => {
+      const { data } = await axiosInstance.post(
+        "",
+        {},
+        { withCredentials: true }
+      );
+      // console.log(data);
+      const { status, user } = data;
+      if (status) {
+        setLoginStatus(true);
+      } else {
+        removeCookie("token",{ path: '/' });
+        setLoginStatus(false)
+        navigate("/auth/login");
+        toast(user, { position: "top-left" });
+        console.log('cookie not ok')
+      }
+    };
+    verifyCookie();
+    axiosInstance
+      .get(`book/${id}`)
       .then((response) => {
         setBook(response.data.book);
         setLoading(false);
@@ -21,7 +49,7 @@ const ShowBook = () => {
         console.log(error);
         setLoading(false);
       });
-  }, []);
+  }, [cookies,removeCookie,navigate]);
 
   return (
     <div className="p-4">

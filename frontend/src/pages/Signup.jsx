@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useContext, useState ,useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Zoom, Flip } from "react-toastify";
@@ -6,10 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 import { loginContext } from "../../appContext";
+import { REACT_APP_API_URL } from '../../config'
+import axios from "axios";
 
 function Signup() {
   const navigate = useNavigate();
-  const {loginStatus}=useContext(loginContext)
+  const {loginStatus}=useContext(loginContext);
   const [loading, setLoading] = useState(false);
   const [remember,setRemember]=useState(false);
   const [inputValue, setInputValue] = useState({
@@ -17,6 +18,8 @@ function Signup() {
     username: "",
     password: "",
   });
+  const axiosInstance=axios.create({baseURL:REACT_APP_API_URL})
+
   const { email, username, password } = inputValue;
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -34,8 +37,8 @@ function Signup() {
     setLoading(true);
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5555/api/auth/signup",
+      const { data } = await axiosInstance.post(
+        "auth/signup",
         { ...inputValue,remember },
         { withCredentials: true }
       );

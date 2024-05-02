@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast, Zoom, Flip } from "react-toastify";
@@ -6,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 import { loginContext } from "../../appContext";
+import { REACT_APP_API_URL } from '../../config';
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Login = () => {
     email: "",
     password: ""
   });
+  const axiosInstance=axios.create({baseURL:REACT_APP_API_URL})
 
   useEffect(() => {
     if (loginStatus) {
@@ -43,8 +45,8 @@ const Login = () => {
     setLoading(true);
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5555/api/auth/login",
+      const { data } = await axiosInstance.post(
+        "auth/login",
         { ...inputValue,remember },
         { withCredentials: true }
       );

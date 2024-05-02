@@ -16,6 +16,7 @@ app.use(cors({
   credentials: true,
   origin: true,
 }));
+
 //option 2:allow custom origins
 // app.use(
 //     cors({

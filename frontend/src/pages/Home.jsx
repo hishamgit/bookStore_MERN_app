@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import Spinner from "../components/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -9,6 +8,8 @@ import { MdOutlineAddBox, MdOutlineDelete } from "react-icons/md";
 import BooksCard from "../components/Home/BooksCard";
 import BooksTable from "../components/Home/BooksTable";
 import { loginContext } from "../../appContext";
+import { REACT_APP_API_URL } from '../../config'
+import axios from "axios";
 
 function Home() {
   const [books, setBooks] = useState([]);
@@ -17,7 +18,7 @@ function Home() {
   const [username, setUsername] = useState("");
   const [cookies,setCookie, removeCookie] = useCookies([]);
   const {loginStatus,setLoginStatus}=useContext(loginContext);
-
+  const axiosInstance=axios.create({baseURL:REACT_APP_API_URL})
   const navigate = useNavigate();
 
   const Logout = () => {
@@ -30,8 +31,8 @@ function Home() {
   useEffect(() => {
     setLoading(true);
     const verifyCookie = async () => {
-      const { data } = await axios.post(
-        "http://localhost:5555/api",
+      const { data } = await axiosInstance.post(
+        "",
         {},
         { withCredentials: true }
       );
@@ -44,13 +45,14 @@ function Home() {
       } else {
         removeCookie("token",{ path: '/' });
         setLoginStatus(false)
+        navigate("/auth/login");
         toast(user, { position: "top-left" });
         console.log('cookie not ok')
       }
     };
     verifyCookie();
-    axios
-      .get("http://localhost:5555/api/book")
+    axiosInstance
+      .get("book")
       .then((response) => {
         setBooks(response.data.data);
         setLoading(false);
